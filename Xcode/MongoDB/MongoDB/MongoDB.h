@@ -14,6 +14,4 @@ FOUNDATION_EXPORT double MongoDBVersionNumber;
 //! Project version string for MongoDB.
 FOUNDATION_EXPORT const unsigned char MongoDBVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <MongoDB/PublicHeader.h>
-
 

@@ -1,5 +1,5 @@
 //
-//  Client.swift
+//  MongoDB.swift
 //  MongoDB
 //
 //  Created by Alsey Coleman Miller on 12/13/15.
@@ -7,5 +7,12 @@
 //
 
 import SwiftFoundation
+import CMongoC
 
-public class 
+public final class MongoDB {
+    
+    static func initializeLibrary() {
+        
+        //mongoC
+    }
+}
