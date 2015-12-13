@@ -12,7 +12,6 @@
 		6ED88AC21C1DFA7500DF07E3 /* MongoDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED88AC11C1DFA7500DF07E3 /* MongoDBTests.swift */; };
 		6ED88AD01C1DFA9200DF07E3 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED88ACF1C1DFA9200DF07E3 /* Client.swift */; };
 		6ED88AD31C1E13C400DF07E3 /* MongoDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED88AD21C1E13C400DF07E3 /* MongoDB.swift */; };
-		6ED88AD51C1E16D900DF07E3 /* libmongoc-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ED88AD41C1E16D900DF07E3 /* libmongoc-1.0.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,10 +33,7 @@
 		6ED88AC31C1DFA7500DF07E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ED88ACF1C1DFA9200DF07E3 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		6ED88AD21C1E13C400DF07E3 /* MongoDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoDB.swift; sourceTree = "<group>"; };
-		6ED88AD41C1E16D900DF07E3 /* libmongoc-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libmongoc-1.0.0.dylib"; path = "../../../../../../usr/local/lib/libmongoc-1.0.0.dylib"; sourceTree = "<group>"; };
 		6ED88AD61C1E16F400DF07E3 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../../Package.swift; sourceTree = "<group>"; };
-		6ED88AD71C1E171D00DF07E3 /* CMongoC.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = CMongoC.modulemap; sourceTree = "<group>"; };
-		6ED88B431C1E18F400DF07E3 /* CBSON.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = CBSON.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +41,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ED88AD51C1E16D900DF07E3 /* libmongoc-1.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				6ED88AD61C1E16F400DF07E3 /* Package.swift */,
-				6ED88AD11C1DFC8F00DF07E3 /* Dependencies */,
 				6ED88ACC1C1DFA8700DF07E3 /* Sources */,
 				6ED88AB41C1DFA7500DF07E3 /* MongoDB */,
 				6ED88AC01C1DFA7500DF07E3 /* MongoDBTests */,
@@ -85,8 +79,6 @@
 			isa = PBXGroup;
 			children = (
 				6ED88AB51C1DFA7500DF07E3 /* MongoDB.h */,
-				6ED88B431C1E18F400DF07E3 /* CBSON.modulemap */,
-				6ED88AD71C1E171D00DF07E3 /* CMongoC.modulemap */,
 				6ED88AB71C1DFA7500DF07E3 /* Info.plist */,
 			);
 			path = MongoDB;
@@ -125,14 +117,6 @@
 			children = (
 			);
 			path = UnitTests;
-			sourceTree = "<group>";
-		};
-		6ED88AD11C1DFC8F00DF07E3 /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				6ED88AD41C1E16D900DF07E3 /* libmongoc-1.0.0.dylib */,
-			);
-			name = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

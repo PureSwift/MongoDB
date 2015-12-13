@@ -1,1 +1,3 @@
 github "PureSwift/SwiftFoundation"
+github "PureSwift/CMongoC"
+github "PureSwift/CBSON"
