@@ -1,3 +1,5 @@
 .build
 Packages
 Carthage/*
+
+Xcode/MongoDB/MongoDB.xcodeproj/project.xcworkspace/xcuserdata
