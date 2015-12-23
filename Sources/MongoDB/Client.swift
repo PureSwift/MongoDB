@@ -41,9 +41,18 @@ public extension MongoDB {
         // MARK: - Methods
         
         /// Sends a simple command to the server.
-        public func command(command: BSON.Value, databaseName: String) {
+        public func command(command: BSON.Document, databaseName: String) throws {
             
-            mongoc_client_command_simple(internalPointer, databaseName, commandPointer, readPreferences, &reply, &error)
+            guard let commandPointer = BSON.unsafePointerFromDocument(command)
+                else { fatalError("Could not convert BSON document to bson_t") }
+            
+            defer { bson_destroy(commandPointer) }
+            
+            var responseBSON = bson_t()
+            
+            var errorBSON = bson_error_t()
+            
+            mongoc_client_command_simple(internalPointer, databaseName, commandPointer, <#T##read_prefs: COpaquePointer##COpaquePointer#>, &responseBSON, &errorBSON)
         }
     }
 }
