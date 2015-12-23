@@ -1,3 +1,3 @@
-github "PureSwift/SwiftFoundation"
+github "PureSwift/SwiftFoundation" "develop"
 github "PureSwift/CMongoC"
-github "PureSwift/CBSON"
+github "PureSwift/BinaryJSON" "master"
