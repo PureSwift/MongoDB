@@ -1,0 +1,4 @@
+module CMongoC [system] {
+    header "/usr/local/include/libmongoc-1.0/mongoc.h"
+    export *
+}

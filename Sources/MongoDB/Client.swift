@@ -8,4 +8,7 @@
 
 import SwiftFoundation
 
-public class 
+public class Client {
+    
+    
+}
