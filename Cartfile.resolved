@@ -1,3 +1,2 @@
 github "PureSwift/SwiftFoundation" "1bd7e82c365c38ed0bf94917f57713da72543005"
-github "PureSwift/libbson-xcode" "7fd01a66361e6a41154d3718d8a2d55c56f83985"
-github "PureSwift/BinaryJSON" "16a0a4df44f7267f65fbbe5b40939b83f7e6ef7f"
+github "PureSwift/BinaryJSON" "f459a84960eb38449529607ff53b2a1ec7295fcb"

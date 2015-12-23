@@ -7,14 +7,9 @@
 //
 
 import SwiftFoundation
+import BinaryJSON
 import CMongoC
-import struct BinaryJSON.BSON
-
-#if os(OSX)
-    import bson
-#elseif os(Linux)
-    import CBSON
-#endif
+import CBSON
 
 public extension MongoDB {
     
@@ -47,8 +42,6 @@ public extension MongoDB {
         
         /// Sends a simple command to the server.
         public func command(command: BSON.Value, databaseName: String) {
-            
-            
             
             mongoc_client_command_simple(internalPointer, databaseName, commandPointer, readPreferences, &reply, &error)
         }
