@@ -13,6 +13,11 @@ public final class MongoDB {
     
     static func initializeLibrary() {
         
-        mongoc_client_new(<#T##uri_string: UnsafePointer<Int8>##UnsafePointer<Int8>#>)
+        mongoc_init()
+    }
+    
+    static func cleanupLibrary() {
+        
+        mongoc_cleanup()
     }
 }
