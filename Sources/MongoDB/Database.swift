@@ -26,10 +26,7 @@ public extension MongoDB {
         
         // MARK: - Initialization
         
-        deinit {
-            
-            mongoc_database_destroy(internalPointer)
-        }
+        deinit { mongoc_database_destroy(internalPointer) }
         
         public init(client: Client, databaseName: String) {
             

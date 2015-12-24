@@ -13,6 +13,7 @@ import CBSON
 
 public extension MongoDB {
     
+    /// MongoDB client. Manages a connection.
     public final class Client {
         
         // MARK: - Internal Properties
@@ -26,6 +27,7 @@ public extension MongoDB {
             mongoc_client_destroy(internalPointer)
         }
         
+        /// Initializes the client with the specified URL. 
         public init(URL: String) {
             
             self.internalPointer = mongoc_client_new(URL)
@@ -33,6 +35,7 @@ public extension MongoDB {
         
         // MARK: - Public Properties
         
+        /// Maximum size of BSON that can be sent to the server.
         public var maximumBSONSize: Int {
             
             return Int(mongoc_client_get_max_bson_size(internalPointer))
