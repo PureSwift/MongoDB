@@ -35,7 +35,7 @@ class DatabaseTests: XCTestCase {
         
         let client = MongoDB.Client(URL: "mongodb://localhost:27017")
         
-        let database = MongoDB.Database(client: client, databaseName: databaseName)
+        let database = MongoDB.Database(databaseName, client: client)
         
         XCTAssert(database.name == databaseName)
     }

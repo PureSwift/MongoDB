@@ -28,7 +28,7 @@ public extension MongoDB {
         
         deinit { mongoc_database_destroy(internalPointer) }
         
-        public init(client: Client, databaseName: String) {
+        public init(_ databaseName: String, client: Client) {
             
             self.client = client
             
