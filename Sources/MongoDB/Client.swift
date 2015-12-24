@@ -33,26 +33,39 @@ public extension MongoDB {
         
         // MARK: - Public Properties
         
-        public var maximumBSONSize: Int32 {
+        public var maximumBSONSize: Int {
             
-            return mongoc_client_get_max_bson_size(internalPointer)
+            return Int(mongoc_client_get_max_bson_size(internalPointer))
         }
         
         // MARK: - Methods
         
         /// Sends a simple command to the server.
-        public func command(command: BSON.Document, databaseName: String) throws {
+        public func command(command: BSON.Document, databaseName: String? = nil) throws -> BSON.Document? {
+            
+            let convertedDatabaseName = convertString(databaseName)
+            
+            defer { cleanConvertedString(convertedDatabaseName) }
             
             guard let commandPointer = BSON.unsafePointerFromDocument(command)
                 else { fatalError("Could not convert BSON document to bson_t") }
             
             defer { bson_destroy(commandPointer) }
             
-            var responseBSON = bson_t()
+            var responseBSON = UnsafeMutablePointer<bson_t>()
+            
+            defer { if responseBSON != nil { bson_destroy(responseBSON) } }
             
             var errorBSON = bson_error_t()
             
-            mongoc_client_command_simple(internalPointer, databaseName, commandPointer, <#T##read_prefs: COpaquePointer##COpaquePointer#>, &responseBSON, &errorBSON)
+            guard mongoc_client_command_simple(internalPointer, convertedDatabaseName.0, commandPointer, nil, responseBSON, &errorBSON)
+                else { throw BSON.Error(unsafePointer: &errorBSON) }
+            
+            guard responseBSON != nil else { return nil }
+            
+            let responseDocument = BSON.documentFromUnsafePointer(responseBSON)!
+            
+            return responseDocument
         }
     }
 }

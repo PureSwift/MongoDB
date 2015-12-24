@@ -11,12 +11,12 @@ import CMongoC
 
 public final class MongoDB {
     
-    static func initializeLibrary() {
+    public static func initializeLibrary() {
         
         mongoc_init()
     }
     
-    static func cleanupLibrary() {
+    public static func cleanupLibrary() {
         
         mongoc_cleanup()
     }
