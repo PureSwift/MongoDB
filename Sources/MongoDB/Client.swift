@@ -41,11 +41,7 @@ public extension MongoDB {
         // MARK: - Methods
         
         /// Sends a simple command to the server.
-        public func command(command: BSON.Document, databaseName: String? = nil) throws -> BSON.Document? {
-            
-            let convertedDatabaseName = convertString(databaseName)
-            
-            defer { cleanConvertedString(convertedDatabaseName) }
+        public func command(command: BSON.Document, databaseName: String) throws -> BSON.Document? {
             
             guard let commandPointer = BSON.unsafePointerFromDocument(command)
                 else { fatalError("Could not convert BSON document to bson_t") }
@@ -54,11 +50,12 @@ public extension MongoDB {
             
             var responseBSON = UnsafeMutablePointer<bson_t>()
             
+            // conditionally destroy
             defer { if responseBSON != nil { bson_destroy(responseBSON) } }
             
             var errorBSON = bson_error_t()
             
-            guard mongoc_client_command_simple(internalPointer, convertedDatabaseName.0, commandPointer, nil, responseBSON, &errorBSON)
+            guard mongoc_client_command_simple(internalPointer, databaseName, commandPointer, nil, responseBSON, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
             
             guard responseBSON != nil else { return nil }

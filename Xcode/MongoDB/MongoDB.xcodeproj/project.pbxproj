@@ -15,6 +15,7 @@
 		6E012F801C2BB798007ADFF0 /* BinaryJSON.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EE81C2A48F5004DE15F /* BinaryJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E012F811C2BB798007ADFF0 /* SwiftFoundation.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EEA1C2A48F5004DE15F /* SwiftFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E012F831C2BB9CA007ADFF0 /* ConvertString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E012F821C2BB9CA007ADFF0 /* ConvertString.swift */; };
+		6E012F851C2BC020007ADFF0 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E012F841C2BC020007ADFF0 /* DatabaseTests.swift */; };
 		6E378EEB1C2A48F5004DE15F /* BinaryJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EE81C2A48F5004DE15F /* BinaryJSON.framework */; };
 		6E378EED1C2A48F5004DE15F /* SwiftFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EEA1C2A48F5004DE15F /* SwiftFoundation.framework */; };
 		6E378EEE1C2A49F6004DE15F /* libmongoc-1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EE51C2A424F004DE15F /* libmongoc-1.0.dylib */; };
@@ -135,6 +136,7 @@
 		6E012F7A1C2BB431007ADFF0 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		6E012F7C1C2BB5A2007ADFF0 /* ClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
 		6E012F821C2BB9CA007ADFF0 /* ConvertString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvertString.swift; sourceTree = "<group>"; };
+		6E012F841C2BC020007ADFF0 /* DatabaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		6E378EE51C2A424F004DE15F /* libmongoc-1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libmongoc-1.0.dylib"; path = "/usr/local/lib/libmongoc-1.0.dylib"; sourceTree = "<absolute>"; };
 		6E378EE81C2A48F5004DE15F /* BinaryJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BinaryJSON.framework; path = ../../Carthage/Build/Mac/BinaryJSON.framework; sourceTree = "<group>"; };
 		6E378EEA1C2A48F5004DE15F /* SwiftFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftFoundation.framework; path = ../../Carthage/Build/Mac/SwiftFoundation.framework; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 			children = (
 				6E012F7A1C2BB431007ADFF0 /* main.swift */,
 				6E012F7C1C2BB5A2007ADFF0 /* ClientTests.swift */,
+				6E012F841C2BC020007ADFF0 /* DatabaseTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E012F851C2BC020007ADFF0 /* DatabaseTests.swift in Sources */,
 				6E012F7D1C2BB5A2007ADFF0 /* ClientTests.swift in Sources */,
 				6E012F7E1C2BB658007ADFF0 /* main.swift in Sources */,
 			);
