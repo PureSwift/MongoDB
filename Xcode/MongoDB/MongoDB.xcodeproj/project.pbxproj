@@ -325,11 +325,11 @@
 		6ED88ACD1C1DFA8700DF07E3 /* MongoDB */ = {
 			isa = PBXGroup;
 			children = (
-				6E012F821C2BB9CA007ADFF0 /* ConvertString.swift */,
 				6ED88AD21C1E13C400DF07E3 /* MongoDB.swift */,
 				6ED88ACF1C1DFA9200DF07E3 /* Client.swift */,
 				6E00F9661C2A5C270067A49C /* Database.swift */,
 				6E012F251C2B636B007ADFF0 /* Error.swift */,
+				6E012F821C2BB9CA007ADFF0 /* ConvertString.swift */,
 			);
 			path = MongoDB;
 			sourceTree = "<group>";

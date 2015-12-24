@@ -40,9 +40,9 @@ public extension MongoDB {
         
         // MARK: - Properties
         
-        public var name: String {
+        public lazy var name: String = {
             
-            return String.fromCString(mongoc_database_get_name(internalPointer))!
-        }
+            return String.fromCString(mongoc_database_get_name(self.internalPointer))!
+        }()
     }
 }
