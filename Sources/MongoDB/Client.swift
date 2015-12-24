@@ -27,7 +27,7 @@ public extension MongoDB {
             mongoc_client_destroy(internalPointer)
         }
         
-        /// Initializes the client with the specified URL. 
+        /// Initializes the client with the specified URL.
         public init(URL: String) {
             
             self.internalPointer = mongoc_client_new(URL)
@@ -44,26 +44,24 @@ public extension MongoDB {
         // MARK: - Methods
         
         /// Sends a simple command to the server.
-        public func command(command: BSON.Document, databaseName: String) throws -> BSON.Document? {
+        public func command(command: BSON.Document, databaseName: String) throws -> BSON.Document {
             
             guard let commandPointer = BSON.unsafePointerFromDocument(command)
                 else { fatalError("Could not convert BSON document to bson_t") }
             
             defer { bson_destroy(commandPointer) }
             
-            var responseBSON = UnsafeMutablePointer<bson_t>()
+            var responseBSON = bson_t()
             
             // conditionally destroy
-            defer { if responseBSON != nil { bson_destroy(responseBSON) } }
+            defer { bson_destroy(&responseBSON) }
             
             var errorBSON = bson_error_t()
             
-            guard mongoc_client_command_simple(internalPointer, databaseName, commandPointer, nil, responseBSON, &errorBSON)
+            guard mongoc_client_command_simple(internalPointer, databaseName, commandPointer, nil, &responseBSON, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
             
-            guard responseBSON != nil else { return nil }
-            
-            let responseDocument = BSON.documentFromUnsafePointer(responseBSON)!
+            let responseDocument = BSON.documentFromUnsafePointer(&responseBSON)!
             
             return responseDocument
         }

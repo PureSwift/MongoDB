@@ -9,6 +9,7 @@
 import XCTest
 import MongoDB
 import BinaryJSON
+import SwiftFoundation
 
 class ClientTests: XCTestCase {
     
@@ -34,12 +35,15 @@ class ClientTests: XCTestCase {
         
         let command: BSON.Document = ["ping": .Number(.Integer32(1))]
         
-        let response: BSON.Document?
+        let response: BSON.Document
         
         do { response = try client.command(command, databaseName: "test") }
         catch { XCTFail("\(error)"); return }
         
         print("Response: \n\(response)")
+        
+        // response should always be ["ok": 1.0]
+        XCTAssert(response.toJSON() == .Object(["ok": .Number(.Double(1.0))]))
     }
 
 }
