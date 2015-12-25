@@ -63,6 +63,20 @@ public extension MongoDB {
             return mongoc_cursor_more(internalPointer)
         }
         
+        /// The maximum waiting time in miliseconds.
+        ///
+        /// - Note: The maximum amount of time for the server to wait on new documents to satisfy a tailable cursor query. 
+        /// Only applies if the is cursor created from ```mongoc_collection_find``` with the query flags 
+        /// ```MONGOC_QUERY_TAILABLE_CURSOR``` and ```MONGOC_QUERY_AWAIT_DATA```, and the server is MongoDB 3.2 or later.
+        ///
+        /// - SeeAlso: [Tailable Cursors](http://api.mongodb.org/c/current/cursors.html#tailable)
+        public var maxAwaitTime: UInt32 {
+            
+            get { return mongoc_cursor_get_max_await_time_ms(internalPointer) }
+            
+            set { mongoc_cursor_set_max_await_time_ms(internalPointer, newValue) }
+        }
+        
         // MARK: - Methods
         
         public func next() throws -> BSON.Document? {
