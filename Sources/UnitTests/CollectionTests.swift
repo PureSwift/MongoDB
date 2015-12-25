@@ -62,4 +62,40 @@ class CollectionTests: XCTestCase {
         
         catch { XCTFail("\(error)"); return }
     }
+    
+    func testFind() {
+        
+        // insert document
+        
+        let databaseName = "Test\(Int(Date().timeIntervalSince1970))"
+        
+        let client = MongoDB.Client(URL: "mongodb://localhost:27017")
+        
+        let collection = MongoDB.Collection("TestFindCollection", database: databaseName, client: client)
+        
+        var document = BSON.Document()
+        
+        document["_id"] = .ObjectID(BSON.ObjectID())
+        
+        document["hello"] = .String("world")
+        
+        do { try collection.insert(document) }
+            
+        catch { XCTFail("\(error)"); return }
+        
+        // find that document
+        
+        guard let cursor = collection.find(document)
+            else { XCTFail("Could not create cursor"); return }
+        
+        let resultArray = Array<BSON.Document>(GeneratorSequence(cursor.generator))
+        
+        guard let firstResult = resultArray.first
+            else { XCTFail("Empty results cursor"); return }
+        
+        XCTAssert(firstResult == document)
+        XCTAssert(resultArray.count == 1)
+        
+        print("Cursor result:\n\(resultArray)")
+    }
 }

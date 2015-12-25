@@ -22,6 +22,7 @@
 		6E378EED1C2A48F5004DE15F /* SwiftFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EEA1C2A48F5004DE15F /* SwiftFoundation.framework */; };
 		6E378EEE1C2A49F6004DE15F /* libmongoc-1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E378EE51C2A424F004DE15F /* libmongoc-1.0.dylib */; };
 		6E93BF171C2D9BB000FE5E32 /* HostList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E93BF161C2D9BB000FE5E32 /* HostList.swift */; };
+		6E93BF191C2DA9C700FE5E32 /* CursorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E93BF181C2DA9C700FE5E32 /* CursorTests.swift */; };
 		6ED88AB61C1DFA7500DF07E3 /* MongoDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ED88AB51C1DFA7500DF07E3 /* MongoDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6ED88ABD1C1DFA7500DF07E3 /* MongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ED88AB21C1DFA7500DF07E3 /* MongoDB.framework */; };
 		6ED88AD31C1E13C400DF07E3 /* MongoDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED88AD21C1E13C400DF07E3 /* MongoDB.swift */; };
@@ -146,6 +147,7 @@
 		6E378EE81C2A48F5004DE15F /* BinaryJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BinaryJSON.framework; path = ../../Carthage/Build/Mac/BinaryJSON.framework; sourceTree = "<group>"; };
 		6E378EEA1C2A48F5004DE15F /* SwiftFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftFoundation.framework; path = ../../Carthage/Build/Mac/SwiftFoundation.framework; sourceTree = "<group>"; };
 		6E93BF161C2D9BB000FE5E32 /* HostList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostList.swift; sourceTree = "<group>"; };
+		6E93BF181C2DA9C700FE5E32 /* CursorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorTests.swift; sourceTree = "<group>"; };
 		6ED88AB21C1DFA7500DF07E3 /* MongoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MongoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED88AB51C1DFA7500DF07E3 /* MongoDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MongoDB.h; sourceTree = "<group>"; };
 		6ED88AB71C1DFA7500DF07E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				6E012F7C1C2BB5A2007ADFF0 /* ClientTests.swift */,
 				6E012F841C2BC020007ADFF0 /* DatabaseTests.swift */,
 				6E3660CA1C2CC9BB00089022 /* CollectionTests.swift */,
+				6E93BF181C2DA9C700FE5E32 /* CursorTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -476,6 +479,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E93BF191C2DA9C700FE5E32 /* CursorTests.swift in Sources */,
 				6E012F851C2BC020007ADFF0 /* DatabaseTests.swift in Sources */,
 				6E012F7D1C2BB5A2007ADFF0 /* ClientTests.swift in Sources */,
 				6E012F7E1C2BB658007ADFF0 /* main.swift in Sources */,

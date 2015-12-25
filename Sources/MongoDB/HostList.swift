@@ -21,18 +21,64 @@ public extension MongoDB {
         
         public let port: UInt16
         
-        internal static func fromHostList(hostList: mongoc_host_list_t) -> [Host] {
+        internal static func fromHostList(firstHostList: mongoc_host_list_t) -> [Host] {
             
             var hostArray = [Host]()
             
-            var currentHostList: mongoc_host_list_t? = hostList
+            var currentHostList: mongoc_host_list_t? = firstHostList
             
-            while let hostList = currentHostList {
+            // convert and add to array
+            while var hostList = currentHostList {
                 
-                let hostString = String.fromCString(hostList.host)
+                let hostString: String
                 
-                //hostArray.append(<#T##newElement: MongoDB.Host##MongoDB.Host#>)
+                do {
+                    
+                    let string = withUnsafePointer(&hostList.host) { (unsafeTuplePointer) -> String in
+                        
+                        let charPointer = unsafeBitCast(unsafeTuplePointer, UnsafePointer<CChar>.self)
+                        
+                        guard let string = String.fromCString(charPointer)
+                            else { fatalError("Could not create string ") }
+                        
+                        return string
+                    }
+                    
+                    hostString = string
+                }
+                
+                let hostPortString: String
+                
+                do {
+                    
+                    let string = withUnsafePointer(&hostList.host_and_port) { (unsafeTuplePointer) -> String in
+                        
+                        let charPointer = unsafeBitCast(unsafeTuplePointer, UnsafePointer<CChar>.self)
+                        
+                        guard let string = String.fromCString(charPointer)
+                            else { fatalError("Could not create string ") }
+                        
+                        return string
+                    }
+                    
+                    hostPortString = string
+                }
+                
+                
+                // create host and add to array
+                let host = Host(host: hostString, hostPort: hostPortString, port: hostList.port)
+                
+                hostArray.append(host)
+                
+                // set next host in linked list
+                if hostList.next != nil {
+                    
+                    currentHostList = hostList.next.memory
+                }
+                else { currentHostList = nil }
             }
+            
+            return hostArray
         }
     }
 }
