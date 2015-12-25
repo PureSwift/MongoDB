@@ -44,6 +44,7 @@ public extension MongoDB {
         
         // MARK: - Methods
         
+        /// Inserts a document into the collection.
         public func insert(document: BSON.Document, flags: mongoc_insert_flags_t = MONGOC_INSERT_NONE) throws {
             
             guard let documentPointer = BSON.unsafePointerFromDocument(document)
@@ -57,7 +58,10 @@ public extension MongoDB {
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
         
-        public func find(query: BSON.Document, flags: mongoc_query_flags_t = MONGOC_QUERY_NONE, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) -> Cursor? {
+        /// Queries the collection.
+        ///
+        /// Loads all documents by default. 
+        public func find(query: BSON.Document = [:], flags: mongoc_query_flags_t = MONGOC_QUERY_NONE, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) -> Cursor? {
             
             guard let documentPointer = BSON.unsafePointerFromDocument(query)
                 else { fatalError("Could not convert BSON document to bson_t") }
@@ -66,10 +70,28 @@ public extension MongoDB {
             
             let cursorPointer = mongoc_collection_find(internalPointer, flags, UInt32(skip), UInt32(limit), UInt32(batchSize), documentPointer, nil, nil)
             
-            guard cursorPointer != nil
-                else { return nil }
+            guard cursorPointer != nil else { return nil }
             
             return Cursor(internalPointer: cursorPointer)
+        }
+        
+        /// Update a document in the collection.
+        public func update(update: BSON.Document, query: BSON.Document, flags: mongoc_update_flags_t = MONGOC_UPDATE_NONE) throws {
+            
+            guard let updateDocumentPointer = BSON.unsafePointerFromDocument(update)
+                else { fatalError("Could not convert BSON document to bson_t") }
+            
+            defer { bson_destroy(updateDocumentPointer) }
+            
+            guard let queryDocumentPointer = BSON.unsafePointerFromDocument(query)
+                else { fatalError("Could not convert BSON document to bson_t") }
+            
+            defer { bson_destroy(queryDocumentPointer) }
+            
+            var errorBSON = bson_error_t()
+            
+            guard mongoc_collection_update(internalPointer, flags, queryDocumentPointer, updateDocumentPointer, nil, &errorBSON)
+                else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
     }
 }

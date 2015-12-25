@@ -84,6 +84,7 @@ public extension MongoDB {
         
         public func next() throws -> BSON.Document? {
             
+            // The bson objects set in mongoc_cursor_next are ephemeral and good until the next call.
             let bsonPointer = UnsafeMutablePointer<UnsafePointer<bson_t>>.alloc(1)
             defer { bsonPointer.dealloc(1) }
             

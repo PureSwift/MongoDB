@@ -98,4 +98,51 @@ class CollectionTests: XCTestCase {
         
         print("Cursor result:\n\(resultArray)")
     }
+    
+    func testUpdate() {
+        
+        // insert document
+        
+        let databaseName = "Test\(Int(Date().timeIntervalSince1970))"
+        
+        let client = MongoDB.Client(URL: "mongodb://localhost:27017")
+        
+        let collection = MongoDB.Collection("TestFindCollection", database: databaseName, client: client)
+        
+        var document = BSON.Document()
+        
+        let objectID = BSON.ObjectID()
+        
+        document["_id"] = .ObjectID(objectID)
+        
+        document["key"] = .String("originalValue")
+        
+        do { try collection.insert(document) }
+            
+        catch { XCTFail("\(error)"); return }
+        
+        // update that document
+        
+        let newValueDocument: BSON.Document = ["key": .String("newValue")]
+        
+        do { try collection.update(["$set": .Document(newValueDocument)], query: ["_id": .ObjectID(objectID)]) }
+        
+        catch { XCTFail("\(error)"); return }
+        
+        // find updated document
+        
+        guard let cursor = collection.find(newValueDocument)
+            else { XCTFail("Could not create cursor"); return }
+        
+        let resultArray = Array<BSON.Document>(GeneratorSequence(cursor.generator))
+        
+        guard let firstResult = resultArray.first
+            else { XCTFail("Empty results cursor"); return }
+        
+        // verify final document value
+        XCTAssert(firstResult == ["_id": .ObjectID(objectID), "key": .String("newValue")])
+        XCTAssert(resultArray.count == 1)
+        
+        print("Cursor result:\n\(resultArray)")
+    }
 }
