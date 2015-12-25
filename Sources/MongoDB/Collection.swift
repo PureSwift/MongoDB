@@ -56,5 +56,21 @@ public extension MongoDB {
             guard mongoc_collection_insert(internalPointer, flags, documentPointer, nil, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
+        
+        public func find(query: BSON.Document, flags: mongoc_query_flags_t = MONGOC_QUERY_NONE, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) -> Cursor {
+            
+            guard let documentPointer = BSON.unsafePointerFromDocument(query)
+                else { fatalError("Could not convert BSON document to bson_t") }
+            
+            defer { bson_destroy(documentPointer) }
+            
+            let cursorPointer = mongoc_collection_find(internalPointer, flags, UInt32(skip), UInt32(limit), UInt32(batchSize), documentPointer, nil, nil)
+            
+            guard cursorPointer != nil
+                else { return nil }
+            
+            
+            
+        }
     }
 }
