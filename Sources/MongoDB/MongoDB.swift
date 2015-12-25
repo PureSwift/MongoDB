@@ -9,6 +9,7 @@
 import SwiftFoundation
 import CMongoC
 
+/// [MongoDB](https://www.mongodb.org)
 public final class MongoDB {
     
     public static func initializeLibrary() {

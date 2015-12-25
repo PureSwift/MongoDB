@@ -57,7 +57,7 @@ public extension MongoDB {
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
         
-        public func find(query: BSON.Document, flags: mongoc_query_flags_t = MONGOC_QUERY_NONE, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) -> Cursor {
+        public func find(query: BSON.Document, flags: mongoc_query_flags_t = MONGOC_QUERY_NONE, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) -> Cursor? {
             
             guard let documentPointer = BSON.unsafePointerFromDocument(query)
                 else { fatalError("Could not convert BSON document to bson_t") }
@@ -69,8 +69,7 @@ public extension MongoDB {
             guard cursorPointer != nil
                 else { return nil }
             
-            
-            
+            return Cursor(internalPointer: cursorPointer)
         }
     }
 }
