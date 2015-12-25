@@ -1,5 +1,5 @@
 //
-//  DatabaseTests.swift
+//  CollectionTests.swift
 //  MongoDB
 //
 //  Created by Alsey Coleman Miller on 12/24/15.
@@ -11,7 +11,7 @@ import MongoDB
 import BinaryJSON
 import SwiftFoundation
 
-class DatabaseTests: XCTestCase {
+class CollectionTests: XCTestCase {
 
     #if os(OSX)
     
@@ -31,24 +31,35 @@ class DatabaseTests: XCTestCase {
 
     func testName() {
         
+        let collectionName = "TestNameCollection"
+        
         let databaseName = "Test\(Int(Date().timeIntervalSince1970))"
         
         let client = MongoDB.Client(URL: "mongodb://localhost:27017")
         
-        let database = MongoDB.Database(databaseName, client: client)
+        let collection = MongoDB.Collection(collectionName, database: databaseName, client: client)
         
-        XCTAssert(database.name == databaseName)
+        XCTAssert(collection.name == collection.name)
     }
     
-    func testDrop() {
+    func testInsert() {
+        
+        let collectionName = "TestInsertCollection"
         
         let databaseName = "Test\(Int(Date().timeIntervalSince1970))"
         
         let client = MongoDB.Client(URL: "mongodb://localhost:27017")
         
-        let database = MongoDB.Database(databaseName, client: client)
+        let collection = MongoDB.Collection(collectionName, database: databaseName, client: client)
         
-        do { try database.drop() }
+        var document = BSON.Document()
+        
+        document["_id"] = .ObjectID(BSON.ObjectID())
+        
+        document["hello"] = .String("world")
+        
+        do { try collection.insert(document) }
+        
         catch { XCTFail("\(error)"); return }
     }
 }
