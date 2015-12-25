@@ -23,7 +23,16 @@ public extension MongoDB {
         
         internal static func fromHostList(hostList: mongoc_host_list_t) -> [Host] {
             
+            var hostArray = [Host]()
             
+            var currentHostList: mongoc_host_list_t? = hostList
+            
+            while let hostList = currentHostList {
+                
+                let hostString = String.fromCString(hostList.host)
+                
+                //hostArray.append(<#T##newElement: MongoDB.Host##MongoDB.Host#>)
+            }
         }
     }
 }

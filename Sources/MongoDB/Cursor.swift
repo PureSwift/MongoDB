@@ -63,6 +63,8 @@ public extension MongoDB {
             return mongoc_cursor_more(internalPointer)
         }
         
+        /* Swift compiler cant find declaration.
+        
         /// The maximum waiting time in miliseconds.
         ///
         /// - Note: The maximum amount of time for the server to wait on new documents to satisfy a tailable cursor query. 
@@ -76,6 +78,7 @@ public extension MongoDB {
             
             set { mongoc_cursor_set_max_await_time_ms(internalPointer, newValue) }
         }
+        */
         
         // MARK: - Methods
         
@@ -132,9 +135,40 @@ extension MongoDB.Cursor: Copying {
     /// and therefore the query will be re-executed on the MongoDB server when ```next()``` is called.
     public var copy: MongoDB.Cursor {
         
-        let clonePointer = mongoc_cursor_clone(self.internalPointer)
+        let clonePointer = mongoc_cursor_clone(internalPointer)
         
         return MongoDB.Cursor(internalPointer: clonePointer)
+    }
+}
+
+// MARK: - GeneratorType
+
+public extension MongoDB.Cursor {
+    
+    public var generator: Generator {
+        
+        return Generator(cursor: self)
+    }
+    
+    public final class Generator: GeneratorType {
+        
+        public let cursor: MongoDB.Cursor
+        
+        public func next() -> BSON.Document? {
+            
+            var document: BSON.Document?
+            
+            do { document = try cursor.next() }
+            
+            catch { return nil }
+            
+            return document
+        }
+        
+        public init(cursor: MongoDB.Cursor) {
+            
+            self.cursor = cursor
+        }
     }
 }
 
