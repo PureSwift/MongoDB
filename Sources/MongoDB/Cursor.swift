@@ -141,6 +141,16 @@ extension MongoDB.Cursor: Copying {
     }
 }
 
+// MARK: - CustomStringConvertible
+
+extension MongoDB.Cursor: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return "MongoDB.MongoDB.Cursor(host: \(host), isAlive: \(isAlive), more: \(more))"
+    }
+}
+
 // MARK: - GeneratorType
 
 public extension MongoDB.Cursor {

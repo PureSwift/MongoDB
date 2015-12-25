@@ -68,6 +68,13 @@ public extension MongoDB {
                 // create host and add to array
                 let host = Host(host: hostString, hostPort: hostPortString, port: hostList.port)
                 
+                // make sure first host is not empty
+                if hostArray.isEmpty {
+                    
+                    guard host.host.isEmpty == false && host.hostPort.isEmpty == false
+                        else { return [] }
+                }
+                
                 hostArray.append(host)
                 
                 // set next host in linked list

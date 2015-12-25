@@ -54,13 +54,34 @@ class CursorTests: XCTestCase {
         guard let cursor = collection.find(document)
             else { XCTFail("Could not create cursor"); return }
         
-        print("Cursor: \(cursor)")
+        print("Cursor before query:\n\(cursor)\n")
         
-        XCTAssert(cursor.host.isEmpty == false)
+        // not host info
+        XCTAssert(cursor.host.isEmpty)
         
         XCTAssert(cursor.isAlive)
         
         XCTAssert(cursor.more)
+        
+        // send query (to get host info)
+        let _ = Array<BSON.Document>(GeneratorSequence(cursor.generator))
+        
+        print("Cursor after query:\n\(cursor)\n")
+        
+        // should have host info
+        XCTAssert(cursor.host.isEmpty == false)
+        
+        XCTAssert(cursor.isAlive == false)
+        
+        XCTAssert(cursor.more == false)
+        
+        XCTAssert(cursor.host.first!.hostPort == "localhost:27017")
+        
+        XCTAssert(cursor.host.first!.host == "localhost")
+        
+        XCTAssert(cursor.host.first!.port == 27017)
+        
+        XCTAssert(cursor.host.count == 1)
     }
     
     func testCopying() {
@@ -96,6 +117,7 @@ class CursorTests: XCTestCase {
         
         let copyResultArray = Array<BSON.Document>(GeneratorSequence(copy.generator))
         
+        /// cursor result arrays should match
         XCTAssert(resultArray.first! == copyResultArray.first!)
         XCTAssert(resultArray.count == 1)
         XCTAssert(copyResultArray.count == 1)
