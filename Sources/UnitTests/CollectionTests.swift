@@ -107,7 +107,7 @@ class CollectionTests: XCTestCase {
         
         let client = MongoDB.Client(URL: "mongodb://localhost:27017")
         
-        let collection = MongoDB.Collection("TestFindCollection", database: databaseName, client: client)
+        let collection = MongoDB.Collection("TestUpdateCollection", database: databaseName, client: client)
         
         var document = BSON.Document()
         
@@ -125,7 +125,7 @@ class CollectionTests: XCTestCase {
         
         let newValueDocument: BSON.Document = ["key": .String("newValue")]
         
-        do { try collection.update(["$set": .Document(newValueDocument)], query: ["_id": .ObjectID(objectID)]) }
+        do { try collection.update(["_id": .ObjectID(objectID)], update: ["$set": .Document(newValueDocument)]) }
         
         catch { XCTFail("\(error)"); return }
         
@@ -145,4 +145,32 @@ class CollectionTests: XCTestCase {
         
         print("Cursor result:\n\(resultArray)")
     }
+    
+    func testDelete() {
+        
+        // insert document
+        
+        let databaseName = "Test\(Int(Date().timeIntervalSince1970))"
+        
+        let client = MongoDB.Client(URL: "mongodb://localhost:27017")
+        
+        let collection = MongoDB.Collection("TestDeleteCollection", database: databaseName, client: client)
+        
+        var document = BSON.Document()
+        
+        let objectID = BSON.ObjectID()
+        
+        document["_id"] = .ObjectID(objectID)
+        
+        document["key"] = .String("value")
+        
+        do {
+            try collection.insert(document)
+            
+            try collection.delete(document)
+        }
+            
+        catch { XCTFail("\(error)"); return }
+    }
 }
+

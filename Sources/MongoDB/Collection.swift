@@ -76,7 +76,7 @@ public extension MongoDB {
         }
         
         /// Update a document in the collection.
-        public func update(update: BSON.Document, query: BSON.Document, flags: mongoc_update_flags_t = MONGOC_UPDATE_NONE) throws {
+        public func update(query: BSON.Document, update: BSON.Document, flags: mongoc_update_flags_t = MONGOC_UPDATE_NONE) throws {
             
             guard let updateDocumentPointer = BSON.unsafePointerFromDocument(update)
                 else { fatalError("Could not convert BSON document to bson_t") }
@@ -91,6 +91,20 @@ public extension MongoDB {
             var errorBSON = bson_error_t()
             
             guard mongoc_collection_update(internalPointer, flags, queryDocumentPointer, updateDocumentPointer, nil, &errorBSON)
+                else { throw BSON.Error(unsafePointer: &errorBSON) }
+        }
+        
+        /// Deletes a document in the collection. 
+        public func delete(query: BSON.Document, flags: mongoc_remove_flags_t = MONGOC_REMOVE_NONE) throws {
+            
+            guard let queryDocumentPointer = BSON.unsafePointerFromDocument(query)
+                else { fatalError("Could not convert BSON document to bson_t") }
+            
+            defer { bson_destroy(queryDocumentPointer) }
+            
+            var errorBSON = bson_error_t()
+            
+            guard mongoc_collection_remove(internalPointer, flags, queryDocumentPointer, nil, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
     }
