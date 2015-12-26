@@ -78,22 +78,23 @@ public extension MongoDB {
         /// Sets if the write must have been propagated to a majority of nodes before 
         /// indicating write success.
         ///
-        /// The timeout specifies how long, in milliseconds, the server should wait before 
+        /// - Parameter value: The timeout specifies how long, in milliseconds, 
+        /// the server should wait before
         /// indicating that the write has failed. 
         /// This is not the same as a socket timeout. 
         /// A value of zero may be used to indicate no timeout.
-        ///
+        public mutating func setWriteMajority(value: Int32) {
+            
+            ensureUnique()
+            mongoc_write_concern_set_wmajority(storage.internalPointer, value)
+        }
+        
         /// If the write should be written to a majority of nodes before indicating success.
         ///
         /// - Returns: Returns ```true``` if ```wmajority``` is set.
-        public func setWriteMajority(value: Int32) {
+        public var writeMajority: Bool {
             
-            //get { return mongoc_write_concern_get_wmajority(storage.internalPointer) }
-            
-            mutating set {
-                ensureUnique()
-                mongoc_write_concern_set_wmajority(storage.internalPointer, newValue)
-            }
+            return mongoc_write_concern_get_wmajority(storage.internalPointer)
         }
         
         /// Sets the write tag that must be satistified for the write to indicate success. 
