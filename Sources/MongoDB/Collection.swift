@@ -68,6 +68,8 @@ public extension MongoDB {
             
             defer { bson_destroy(documentPointer) }
             
+            // TODO: Implement fetching fields
+            
             let cursorPointer = mongoc_collection_find(internalPointer, flags, UInt32(skip), UInt32(limit), UInt32(batchSize), documentPointer, nil, nil)
             
             guard cursorPointer != nil else { return nil }
@@ -76,7 +78,7 @@ public extension MongoDB {
         }
         
         /// Update a document in the collection.
-        public func update(query: BSON.Document, update: BSON.Document, flags: mongoc_update_flags_t = MONGOC_UPDATE_NONE) throws {
+        public func update(query: BSON.Document, update: BSON.Document, flags: mongoc_update_flags_t = MONGOC_UPDATE_NONE, writeConcern: WriteConcern? = nil) throws {
             
             guard let updateDocumentPointer = BSON.unsafePointerFromDocument(update)
                 else { fatalError("Could not convert BSON document to bson_t") }
@@ -90,12 +92,12 @@ public extension MongoDB {
             
             var errorBSON = bson_error_t()
             
-            guard mongoc_collection_update(internalPointer, flags, queryDocumentPointer, updateDocumentPointer, nil, &errorBSON)
+            guard mongoc_collection_update(internalPointer, flags, queryDocumentPointer, updateDocumentPointer, writeConcern?.storage.internalPointer ?? nil, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
         
         /// Deletes a document in the collection. 
-        public func delete(query: BSON.Document, flags: mongoc_remove_flags_t = MONGOC_REMOVE_NONE) throws {
+        public func delete(query: BSON.Document, flags: mongoc_remove_flags_t = MONGOC_REMOVE_NONE, writeConcern: WriteConcern? = nil) throws {
             
             guard let queryDocumentPointer = BSON.unsafePointerFromDocument(query)
                 else { fatalError("Could not convert BSON document to bson_t") }
@@ -104,7 +106,7 @@ public extension MongoDB {
             
             var errorBSON = bson_error_t()
             
-            guard mongoc_collection_remove(internalPointer, flags, queryDocumentPointer, nil, &errorBSON)
+            guard mongoc_collection_remove(internalPointer, flags, queryDocumentPointer, writeConcern?.storage.internalPointer ?? nil, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
         
