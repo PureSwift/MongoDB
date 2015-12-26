@@ -38,41 +38,25 @@ public extension MongoDB {
         
         // MARK: - Properties
         
-        public lazy var rawValue: String = {
-            
-            let charBuffer = mongoc_uri_get_string(self.storage.internalPointer)
-            
-            return String.fromCString(charBuffer)!
-        }()
+        public var rawValue: String { return storage.stringValue }
         
         /// Fetches the ```authMechanism``` parameter to an URI if provided.
-        public lazy var authenticationMechanism: String? = {
-            
-            // C string should not be freed
-            return String.fromCString(mongoc_uri_get_auth_mechanism(self.storage.internalPointer))
-        }()
+        public var authenticationMechanism: String? { return storage.authenticationMechanism }
         
         /// Fetches the ```authSource``` parameter of an URI if provided.
-        public lazy var authenticationSource: String? = {
-            
-            // C string should not be freed
-            return String.fromCString(mongoc_uri_get_auth_source(self.storage.internalPointer))
-        }()
+        public var authenticationSource: String? { return storage.authenticationSource }
         
         /// Fetches the database portion of an URI if provided. This is the portion after the / but before the ?. 
-        public lazy var database: String? = {
-            
-            // C string should not be freed
-            return String.fromCString(mongoc_uri_get_database(self.storage.internalPointer))
-        }()
+        public var database: String? { return storage.database }
         
         /// Fetches an array of hosts that were defined in the URI (the comma-separated host section).
-        public lazy var hosts: [Host] = {
-            
-            let hostListPointer = mongoc_uri_get_hosts(self.storage.internalPointer)
-            
-            return Host.fromHostList(hostListPointer.memory)
-        }()
+        public var hosts: [Host] { return storage.hosts }
+        
+        /// Fetches a bson document containing all of the options provided after the ```?``` of a URI.
+        public var options: BSON.Document { return storage.options }
+        
+        /// Fetches the password portion of an URI.
+        public var password: String? { return storage.password }
         
         // MARK: - Static Methods
         
@@ -110,5 +94,56 @@ internal extension MongoDB.URI {
             
             return Storage(internalPointer: copyPointer)
         }
+        
+        // MARK: Getters
+        
+        lazy var stringValue: String = {
+            
+            let charBuffer = mongoc_uri_get_string(self.internalPointer)
+            
+            return String.fromCString(charBuffer)!
+        }()
+        
+        lazy var authenticationMechanism: String? = {
+            
+            // C string should not be freed
+            return String.fromCString(mongoc_uri_get_auth_mechanism(self.internalPointer))
+        }()
+        
+        lazy var authenticationSource: String? = {
+            
+            // C string should not be freed
+            return String.fromCString(mongoc_uri_get_auth_source(self.internalPointer))
+        }()
+        
+        lazy var database: String? = {
+            
+            // C string should not be freed
+            return String.fromCString(mongoc_uri_get_database(self.internalPointer))
+        }()
+        
+        lazy var hosts: [MongoDB.Host] = {
+            
+            let hostListPointer = mongoc_uri_get_hosts(self.internalPointer)
+            
+            return MongoDB.Host.fromHostList(hostListPointer.memory)
+        }()
+        
+        lazy var options: BSON.Document = {
+            
+            // get BSON pointer (should not be freed)
+            let unsafePointer = mongoc_uri_get_options(self.internalPointer)
+            
+            guard let document = BSON.documentFromUnsafePointer(UnsafeMutablePointer(unsafePointer))
+                else { fatalError("Could not create BSON document from unsafe pointer") }
+            
+            return document
+        }()
+        
+        lazy var password: String? = {
+            
+            return String.fromCString(mongoc_uri_get_password(self.internalPointer))
+        }()
     }
 }
+
