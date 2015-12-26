@@ -43,6 +43,32 @@ public extension MongoDB {
             
             return String.fromCString(charBuffer)!
         }
+        
+        /// Fetches the ```authMechanism``` parameter to an URI if provided.
+        public var authenticationMechanism: String? {
+            
+            // C string should not be freed
+            return String.fromCString(mongoc_uri_get_auth_mechanism(storage.internalPointer))
+        }
+        
+        /// Fetches the ```authSource``` parameter of an URI if provided.
+        public var authenticationSource: String? {
+            
+            // C string should not be freed
+            return String.fromCString(mongoc_uri_get_auth_source(storage.internalPointer))
+        }
+        
+        // MARK: - Static Methods
+        
+        /// Unescapes an URI encoded string. For example, "%40" would become "@".
+        static func unescape(escapedString: String) -> String {
+            
+            let stringPointer = mongoc_uri_unescape(escapedString)
+            
+            defer { bson_free(stringPointer) }
+            
+            return String.fromCString(stringPointer)!
+        }
     }
 }
 
@@ -73,7 +99,7 @@ internal extension MongoDB.URI {
         
         var copy: Storage {
             
-            let copyPointer = mongoc_write_concern_copy(internalPointer)
+            let copyPointer = mongoc_uri_copy(internalPointer)
             
             return Storage(internalPointer: copyPointer)
         }
