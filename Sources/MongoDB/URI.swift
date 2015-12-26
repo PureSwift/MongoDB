@@ -22,7 +22,8 @@ public extension MongoDB {
         
         // MARK: - Internal Properties
         
-        internal var storage: Storage
+        // internal class is never mutated
+        internal let storage: Storage
         
         // MARK: - Initialization
         
@@ -37,26 +38,41 @@ public extension MongoDB {
         
         // MARK: - Properties
         
-        public var rawValue: String {
+        public lazy var rawValue: String = {
             
-            let charBuffer = mongoc_uri_get_string(storage.internalPointer)
+            let charBuffer = mongoc_uri_get_string(self.storage.internalPointer)
             
             return String.fromCString(charBuffer)!
-        }
+        }()
         
         /// Fetches the ```authMechanism``` parameter to an URI if provided.
-        public var authenticationMechanism: String? {
+        public lazy var authenticationMechanism: String? = {
             
             // C string should not be freed
-            return String.fromCString(mongoc_uri_get_auth_mechanism(storage.internalPointer))
-        }
+            return String.fromCString(mongoc_uri_get_auth_mechanism(self.storage.internalPointer))
+        }()
         
         /// Fetches the ```authSource``` parameter of an URI if provided.
-        public var authenticationSource: String? {
+        public lazy var authenticationSource: String? = {
             
             // C string should not be freed
-            return String.fromCString(mongoc_uri_get_auth_source(storage.internalPointer))
-        }
+            return String.fromCString(mongoc_uri_get_auth_source(self.storage.internalPointer))
+        }()
+        
+        /// Fetches the database portion of an URI if provided. This is the portion after the / but before the ?. 
+        public lazy var database: String? = {
+            
+            // C string should not be freed
+            return String.fromCString(mongoc_uri_get_database(self.storage.internalPointer))
+        }()
+        
+        /// Fetches an array of hosts that were defined in the URI (the comma-separated host section).
+        public lazy var hosts: [Host] = {
+            
+            let hostListPointer = mongoc_uri_get_hosts(self.storage.internalPointer)
+            
+            return Host.fromHostList(hostListPointer.memory)
+        }()
         
         // MARK: - Static Methods
         
@@ -73,15 +89,6 @@ public extension MongoDB {
 }
 
 // MARK: - Internal
-
-internal extension MongoDB.URI {
-    
-    mutating func ensureUnique() {
-        if !isUniquelyReferencedNonObjC(&storage) {
-            storage = storage.copy
-        }
-    }
-}
 
 internal extension MongoDB.URI {
     
