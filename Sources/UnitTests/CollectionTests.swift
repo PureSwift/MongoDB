@@ -172,5 +172,47 @@ class CollectionTests: XCTestCase {
             
         catch { XCTFail("\(error)"); return }
     }
+    
+    func testCount() {
+        
+        let databaseName = "Test\(Int(Date().timeIntervalSince1970))"
+        
+        let client = MongoDB.Client(URL: "mongodb://localhost:27017")
+        
+        let collection = MongoDB.Collection("TestCountCollection", database: databaseName, client: client)
+        
+        // insert documents
+        
+        let key = "key"
+        
+        let value = BSON.Value.String("value")
+        
+        let insertCount: Int64 = 10
+        
+        for _ in 0 ..< insertCount {
+            
+            var document = BSON.Document()
+            
+            let objectID = BSON.ObjectID()
+            
+            document["_id"] = .ObjectID(objectID)
+            
+            document[key] = value
+            
+            do { try collection.insert(document) }
+            
+            catch { XCTFail("\(error)"); return }
+        }
+        
+        // get count
+        
+        let fetchedCount: Int64
+        
+        do { fetchedCount = try collection.count([key: value]) }
+        
+        catch { XCTFail("\(error)"); return }
+        
+        XCTAssert(fetchedCount == insertCount)
+    }
 }
 

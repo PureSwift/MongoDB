@@ -107,5 +107,22 @@ public extension MongoDB {
             guard mongoc_collection_remove(internalPointer, flags, queryDocumentPointer, nil, &errorBSON)
                 else { throw BSON.Error(unsafePointer: &errorBSON) }
         }
+        
+        /// Returns the number of documents in the collection that match the query.
+        public func count(query: BSON.Document, flags: mongoc_query_flags_t = MONGOC_QUERY_NONE, skip: Int = 0, limit: Int = 0) throws -> Int64 {
+            
+            guard let queryDocumentPointer = BSON.unsafePointerFromDocument(query)
+                else { fatalError("Could not convert BSON document to bson_t") }
+            
+            defer { bson_destroy(queryDocumentPointer) }
+            
+            var errorBSON = bson_error_t()
+            
+            let count = mongoc_collection_count(internalPointer, flags, queryDocumentPointer, Int64(skip), Int64(limit), nil, &errorBSON)
+            
+            guard count >= 0 else { throw BSON.Error(unsafePointer: &errorBSON) }
+            
+            return count
+        }
     }
 }
